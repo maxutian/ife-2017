@@ -31,10 +31,14 @@ var list = document.getElementById('aqi-list');
   遍历读取aqiData中各个城市的数据
   将空气质量指数大于60的城市显示到aqi-list的列表中
   */
+  var num = 1;
+  aqiData.sort(function(a,b){
+    return b[1] - a[1];
+  });
   for(var i in aqiData){
-    if(aqiData[i][1] > 60){
+    if(aqiData[i][1] > 60){     
       var newChild = document.createElement('li');
-      newChild.innerHTML = aqiData[i];
+      newChild.innerHTML = '第' + num++ + '名' + ':' + aqiData[i];
       list.appendChild(newChild);
     }
   }
