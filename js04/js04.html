@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>js04</title>
+	<style type='text/css'>
+		#control{
+			text-decoration: none;
+		}	
+		#control li{
+			display: inline-block;
+		}
+		#result{
+			text-decoration: none;
+		}
+		#result li{
+			display: inline-block;
+			width: 50px;
+			height: 50px;
+			line-height: 50px;
+			text-align: center;
+			background-color: orange;
+			margin-left: 20px;
+		}
+		#result li:first-child{
+			margin-left: 0px;
+		}
+	</style>
+</head>
+<body>
+	<ul id="control">
+		<input id="input-text" type="text">
+		<li><button id="btn1" onclick="leftIn()">左侧入</button></li>
+		<li><button id="btn2" onclick="leftOut()">左侧出</button></li>
+		<li><button id="btn3" onclick="rightIn()">右侧入</button></li>
+		<li><button id="btn4" onclick="rightOut()">右侧出</button></li>
+	</ul>
+	<ul id="result"></ul>
+	<script>
+		var arr = new Array();
+		var input = document.getElementById('input-text'),
+			result = document.getElementById('result'),
+			text = '';
+		function leftIn(){
+			arr.unshift(input.value);
+			if(isNaN(input.value)){
+				alert('您输入的不是数字！');
+				return false;
+			}else if(input.value.length <= 0){
+				alert('您输入的是空字符！');
+				return false;
+			}
+			for(var i in arr){
+				text += '<li>' + arr[i] + '</li>';
+			}
+			result.innerHTML = text;
+		}
+		function leftOut(){
+			var l1 = arr.shift();
+			for(var i in arr){
+				text += '<li>' + arr[i] + '</li>';
+			}
+			result.innerHTML = text;
+			alert(l1);
+		}
+		function rightIn(){
+			arr.push(input.value);
+			if(isNaN(input.value)){
+				alert('您输入的不是数字！');
+				return false;
+			}else if(input.value.length <= 0){
+				alert('您输入的是空字符！');
+				return false;
+			}
+			for(var i in arr){
+				text += '<li>' + arr[i] + '</li>';
+			}
+			result.innerHTML = text;
+		}
+		function rightOut(){
+			var r1 = arr.pop();
+			for(var i in arr){
+				text += '<li>' + arr[i] + '</li>';
+			}
+			result.innerHTML = text;
+			alert(r1);
+		}
+	</script>
+</body>
+</html>
