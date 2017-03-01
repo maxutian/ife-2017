@@ -40,9 +40,8 @@
 		var arr = new Array();
 		var input = document.getElementById('input-text'),
 			result = document.getElementById('result'),
-			text = '';
-		function leftIn(){
-			arr.unshift(input.value);
+			li = result.getElementsByTagName('li');
+		function leftIn(){		
 			if(isNaN(input.value)){
 				alert('您输入的不是数字！');
 				return false;
@@ -50,6 +49,8 @@
 				alert('您输入的是空字符！');
 				return false;
 			}
+		 	var text = '';
+			arr.unshift(input.value);
 			for(var i in arr){
 				text += '<li>' + arr[i] + '</li>';
 			}
@@ -57,6 +58,11 @@
 		}
 		function leftOut(){
 			var l1 = arr.shift();
+			if(result.childNodes.length == 0){
+				alert('数组为空!');
+				return false;
+			}
+			var text = '';
 			for(var i in arr){
 				text += '<li>' + arr[i] + '</li>';
 			}
@@ -64,7 +70,6 @@
 			alert(l1);
 		}
 		function rightIn(){
-			arr.push(input.value);
 			if(isNaN(input.value)){
 				alert('您输入的不是数字！');
 				return false;
@@ -72,6 +77,8 @@
 				alert('您输入的是空字符！');
 				return false;
 			}
+			var text = '';
+			arr.push(input.value);
 			for(var i in arr){
 				text += '<li>' + arr[i] + '</li>';
 			}
@@ -79,12 +86,26 @@
 		}
 		function rightOut(){
 			var r1 = arr.pop();
+			if(result.childNodes.length == 0){
+				alert('数组为空!');
+				return false;
+			}
+			var text = '';
 			for(var i in arr){
 				text += '<li>' + arr[i] + '</li>';
 			}
 			result.innerHTML = text;
 			alert(r1);
 		}
+		result.onmouseover = function (){
+			for (var i in li) {
+				li[i].index = i;
+				li[i].onclick = function () {
+					arr.splice(this.index,1);
+					result.removeChild(result.childNodes[this.index]);
+				}
+			}
+		}		
 	</script>
 </body>
 </html>
