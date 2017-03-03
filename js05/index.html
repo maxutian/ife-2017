@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>js05</title>
+	<style type='text/css'>	
+		li{
+			display: inline-block;
+		}
+		#control{
+			text-decoration: none;
+		}
+		#result{
+			text-decoration: none;
+			display: flex;
+			height: 210px;
+			align-items: flex-end;
+			justify-content: flex-start;
+		}
+		#result li{
+			width: 20px;
+			height: auto;
+			font-size: 5px;
+			text-align: center;
+			background-color: orange;
+			margin-left: 5px;
+		}
+		#result li:first-child{
+			margin-left: 0px;
+		}
+	</style>
+</head>
+<body>
+	<ul id="control">
+		<input id="input-text" type="text">
+		<li><button id="btn1" onclick="leftIn()">左侧入</button></li>
+		<li><button id="btn2" onclick="leftOut()">左侧出</button></li>
+		<li><button id="btn3" onclick="rightIn()">右侧入</button></li>
+		<li><button id="btn4" onclick="rightOut()">右侧出</button></li>
+		<li><button id="random" onclick="random()">随机生成60个数字</button></li>
+		<li><button id="sort" onclick="insertSort(arr)">排序</button></li>
+	</ul>
+	<ul id="result"></ul>
+	<script>
+		var arr = new Array();
+		var input = document.getElementById('input-text'),
+			result = document.getElementById('result');
+		function numtest(){
+			if(input.value.length <= 0){
+				alert('您输入的是空字符！');
+				return false;
+			}else if(isNaN(input.value)){
+				alert('您输入的不是数字！');
+				return false;
+			}else if(input.value < 10 || input.value > 100){
+				alert('请输入10到100之间的数字');
+				return false;
+			}else if(arr.length > 60){
+				alert('输入的数字已超过60个');
+			}
+		}
+		function updata(){
+			result.innerHTML = '';
+			for(var i in arr){
+				var li = document.createElement('li');
+				li.innerHTML = arr[i];
+				li.style.height = arr[i] * 2 + 'px';
+				result.appendChild(li);
+			}
+			input.value = '';
+		}
+		// 左侧进
+		function leftIn(){
+			if(numtest() == false){
+				return;
+			}
+			arr.unshift(input.value);
+			updata();
+		}
+		// 左侧出
+		function leftOut(){
+			var l1 = arr.shift();
+			if(result.childNodes.length == 0){
+				alert('数组为空!');
+				return false;
+			}
+			updata();
+			alert(l1);
+		}
+		// 右侧进
+		function rightIn(){
+			if(numtest() == false){
+				return;
+			}
+			arr.push(input.value);
+			updata();
+		}
+		// 右侧出
+		function rightOut(){
+			var r1 = arr.pop();
+			if(result.childNodes.length == 0){
+				alert('数组为空!');
+				return false;
+			}
+			updata();
+			alert(r1);
+		}
+		// 点击删除
+		result.onmouseover = function (){
+			var li = result.childNodes;
+			for (var i in li) {
+				li[i].index = i;
+				li[i].onclick = function () {
+					arr.splice(this.index,1);
+					result.removeChild(result.childNodes[this.index]);
+				}
+			}
+		}
+		//排序
+		function insertSort (arr) {
+		  var len = arr.length;
+		  if (len <= 1) {
+		    return arr;
+		  }
+		  for (var i = 1; i < len; i++) {
+		    let tmp = arr[i];
+		    for (var j = i; j > 0 && arr[j - 1] > tmp; j--) {
+		      arr[j] = arr[j - 1];
+		    }
+		    arr[j] = tmp;
+		  } 
+		  updata();
+		}
+		// 随机生成数字
+		function random(){
+			arr = new Array();
+			var count = 60;
+			for(var i = 0;i < count;i++){
+				arr.push(Math.floor(Math.random() * 90 + 10));
+			}
+			if(arr.length > 60){
+				alert('输入的数字已超过60个');
+				return false;
+			}
+			updata();
+		}
+	</script>
+</body>
+</html>
