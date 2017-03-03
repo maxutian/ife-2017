@@ -45,6 +45,7 @@
 		var arr = new Array();
 		var input = document.getElementById('input-text'),
 			result = document.getElementById('result');
+		//检测输入的数字
 		function numtest(){
 			if(input.value.length <= 0){
 				alert('您输入的是空字符！');
@@ -59,6 +60,7 @@
 				alert('输入的数字已超过60个');
 			}
 		}
+		//更新视图
 		function updata(){
 			result.innerHTML = '';
 			for(var i in arr){

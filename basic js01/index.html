@@ -41,6 +41,7 @@
 		var input = document.getElementById('input-text'),
 			result = document.getElementById('result'),
 			li = result.getElementsByTagName('li');
+		// 左侧进
 		function leftIn(){		
 			if(isNaN(input.value)){
 				alert('您输入的不是数字！');
@@ -56,6 +57,7 @@
 			}
 			result.innerHTML = text;
 		}
+		// 左侧出
 		function leftOut(){
 			var l1 = arr.shift();
 			if(result.childNodes.length == 0){
@@ -69,6 +71,7 @@
 			result.innerHTML = text;
 			alert(l1);
 		}
+		// 右侧进
 		function rightIn(){
 			if(isNaN(input.value)){
 				alert('您输入的不是数字！');
@@ -84,6 +87,7 @@
 			}
 			result.innerHTML = text;
 		}
+		// 右侧出
 		function rightOut(){
 			var r1 = arr.pop();
 			if(result.childNodes.length == 0){
@@ -97,6 +101,7 @@
 			result.innerHTML = text;
 			alert(r1);
 		}
+		// 点击删除
 		result.onmouseover = function (){
 			for (var i in li) {
 				li[i].index = i;
