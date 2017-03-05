@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>js06</title>
+	<style type='text/css'>
+		ul{
+			list-style-type: none;
+		}
+		#control{
+			display: flex;
+			align-items: flex-end;
+		}
+		#control li{
+			margin-left: 20px;
+		}
+		#result{
+			display: flex;
+			flex-direction: row;
+		}
+		#result li{
+			width: auto;
+			padding: 0 20px;
+			height: 50px;
+			line-height: 50px;
+			text-align: center;
+			background-color: orange;
+			margin-left: 20px;
+		}
+		#result li:first-child{
+			margin-left: 0px;
+		}
+		.replaced{
+			padding :0;
+			background-color: red;
+		}
+	</style>
+</head>
+<body>
+	<ul id="control">
+		<textarea name="input" id="input" cols="30" rows="10"></textarea>
+		<li><button id="btn1">插入</button></li>
+		<li><input type="text" id="search"></li>
+		<li><button id="btn2" onclick="change(arr)">查询</button></li>
+	</ul>
+	<ul id="result"></ul>
+	<script>
+	var arr = new Array();
+	var input = document.getElementById('input'),
+		search = document.getElementById('search'),
+		result = document.getElementById('result');
+	//更新视图
+	function updata(){
+		result.innerHTML = '';
+		for(var i in arr){
+			var li = document.createElement('li');
+			li.innerHTML = arr[i];
+			result.appendChild(li);
+		}
+	}
+	//插入元素
+	var re = /[^0-9a-zA-Z\u4e00-\u9fa5]+/;
+	var btn1 = document.getElementById('btn1');
+	btn1.onclick = function(){
+		var inputtrim = input.value.trim();
+		arr.push(inputtrim);
+		arr = arr.toString().split(re);
+		updata();
+	}
+	// 模糊匹配
+	var li = result.getElementsByTagName('li'),
+		btn2 = document.getElementById('btn2');
+	function change(arr){
+		var str = search.value.trim();
+		arr = arr.map(function(d){
+			return d.replace(new RegExp(str, 'g'),'<span class="replaced">' + str + '</span>');
+		});
+		result.innerHTML = '';
+		for(var i in arr){
+			var li = document.createElement('li');
+			li.innerHTML = arr[i];
+			result.appendChild(li);
+		}
+	}
+	</script>
+</body>
+</html>
