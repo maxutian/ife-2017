@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>form02</title>
+	<style type="text/css">
+		#main{
+			width: 500px;
+			margin: 0 auto;
+			text-align: right;
+		}
+		.warn{
+			margin: 0 500px 0 97px;
+			float: left;
+			color: #acb7b1;
+			white-space: nowrap;
+		}
+		button{
+			width: 70px;
+			height: 35px;
+			margin-top: 30px;
+			border-radius: 3px;
+			color: white;
+			border: none;
+			box-shadow: 1px 1px 5px #acb7b1;
+			background-color: #33A6B8;
+		}
+		input,p,h4{
+			display: inline-block;
+		}
+		input{
+			margin-left: 10px;
+			padding-left: 8px;
+			width: 400px;
+			height: 30px;
+			border-radius: 3px;
+			border:1px solid #acb7b1;
+			font-size: 18px;
+		}
+	</style>
+</head>
+<body>
+<div id="main">
+	<form>
+		<h4>名称</h4>
+		<input type="text" id="input0"><br>
+		<p class="warn" id="warn0"></p><br>
+		<h4>密码</h4>
+		<input type="password" id="input1"><br>
+		<p class="warn" id="warn1"></p><br>
+		<h4>密码确认</h4>
+		<input type="password" id="input2"><br>
+		<p class="warn" id="warn2"></p><br>
+		<h4>邮箱</h4>
+		<input type="text" id="input3"><br>
+		<p class="warn" id="warn3"></p><br>
+		<h4>手机</h4>
+		<input type="text" id="input4"><br>
+		<p class="warn" id="warn4"></p><br>
+		<button id="btn1">提交</button>
+	</form>
+</div>
+<script type="text/javascript">
+	var	allwarn = document.getElementsByTagName('p'),
+	 	allinput = document.getElementsByTagName('input'),
+		warntext = ['必填，长度为4~16个字符','密码长度不小于6位','请再次输入密码','请输入正确的邮箱','请填写正确的手机号码'];
+	//改变样式
+	function changeStyle(i,text,color,border){
+		allwarn[i].innerHTML = text;
+		allwarn[i].style.color = color;
+		allinput[i].style.border = border;
+	}
+	//名称栏检查方法
+	function countlength(str){
+		var inputlength = 0;
+		for(var i in str){
+			if(str.charCodeAt(i) >= 0 && str.charCodeAt(i) <= 128){
+				inputlength += 1;
+			}else{
+				inputlength += 2;
+			}
+		}
+		return inputlength;
+	};
+	function nameTest(){
+		if(allinput[0].value.length === 0){
+			changeStyle(0,'姓名不能为空','red','1px solid red');
+			return false;
+		}else if(countlength(allinput[0].value) >=4 && countlength(allinput[0].value) <=16){
+			changeStyle(0,'输入正确','green','1px solid green');
+			return true;
+		}else{
+			changeStyle(0,'请输入长度为4到16为的字符','red','1px solid red');
+			return false;
+		}
+	}
+	//密码栏检查方法
+	function passWTest(){
+		if(allinput[1].value.length >= 6){
+			changeStyle(1,'输入正确','green','1px solid green');
+			return true;
+		}else{
+			changeStyle(1,'密码长度不得小于6位','red','1px solid red');
+			return false;
+		}
+	}
+	//密码确定栏检查方法
+	function passWconfirm(){
+		if(allinput[2].value.length == 0){
+			changeStyle(2,'密码长度不得小于6位','red','1px solid red');
+			return false;
+		}else if(allinput[2].value === allinput[1].value){
+			changeStyle(2,'输入正确','green','1px solid green');
+			return true;
+		}else{
+			changeStyle(2,'两次输入的密码不一致','red','1px solid red');
+			return false;
+		}
+	}
+	//邮箱栏检查方法
+	function emailTest(){
+		var emailreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}/;
+		if(emailreg.test(allinput[3].value)){
+			changeStyle(3,'输入正确','green','1px solid green');
+			return true;
+		}else{
+			changeStyle(3,'请输入正确的邮箱','red','1px solid red');
+			return false;
+		}
+	}
+	//手机栏检查方法
+	function phoneTest(){
+		var phonereg = /^[1][0-9]{10}$/;
+		if(phonereg.test(allinput[4].value)){
+			changeStyle(4,'输入正确','green','1px solid green');
+			return true;
+		}else{
+			changeStyle(4,'请输入正确的手机号码','red','1px solid red');
+			return false;
+		}
+	}
+	//规定每个input框的onfocus事件
+	function focusEvent(i){
+		allinput[i].onfocus = function(){
+			allwarn[i].innerHTML = warntext[i];
+		}
+	}
+	for(var i = 0;i < allinput.length;i++){
+		focusEvent(i);
+	}
+	//规定每个input框的onblur事件
+	allinput[0].onblur = function(){
+		nameTest();
+	}
+	allinput[1].onblur = function(){
+		passWTest();
+	}
+	allinput[2].onblur = function(){
+		passWconfirm();
+	}
+	allinput[3].onblur = function(){
+		emailTest();
+	}
+	allinput[4].onblur = function(){
+		phoneTest();
+	}
+	//按钮点击事件
+	var btn1 = document.getElementById('btn1');
+	btn1.onclick = function(){
+		nameTest();
+		passWTest();
+		passWconfirm();
+		emailTest();
+		phoneTest();
+		if(nameTest() && passWTest() && passWconfirm() && emailTest() && phoneTest()){
+			alert('输入正确');
+			return true;
+		}else {
+			alert('您输入的内容有错误，请重新填写');
+			return false;
+		}
+	}
+</script>
+</body>
+</html>
