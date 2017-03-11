@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>form</title>
+	<style type='text/css'>
+		body{
+			font-family: '微软雅黑';
+		}
+		#tips{
+			margin-left: 60px;
+			margin-top: 5px;
+			color: #acb7b1;
+		}
+		#main{
+			display: flex;
+			width: 600px;
+			height: 200px;
+			margin: 0 auto;
+			justify-content: center;
+			flex-wrap: wrap;
+			align-items: center;
+		}
+		#inputtext{
+			width: 400px;
+			height: 30px;
+			margin-right: 10px;
+			font-size: 20px;
+			border:2px solid;
+			border-color: #acb7b1;
+			border-radius: 3px;
+		}
+		#btn1{
+			width: 70px;
+			height: 35px;
+			border-radius: 3px;
+			color: white;
+			border: none;
+			box-shadow: 1px 1px 5px #acb7b1;
+			background-color: #33A6B8;
+		}
+	</style>
+</head>
+<body>
+<div id="main">
+	<label id="form1">
+		名称：
+		<input type="text" id="inputtext">
+		<button id="btn1">检验</button>
+		<p id="tips">必填，长度为4到16位。</p>
+	</label>
+</div>
+<script type='text/javascript'>
+	var inputtext = document.getElementById('inputtext'),
+		btn1 = document.getElementById('btn1'),
+		tips = document.getElementById('tips');
+	btn1.onclick = function(){
+		var inputvalue = inputtext.value;
+		if(inputvalue.length === 0){
+			tips.innerHTML = '姓名不能为空';
+			tips.style.color = 'red';
+			inputtext.style.border = '1px solid red';
+		}else if(countlength(inputvalue) >=4 && countlength(inputvalue) <=15){
+			tips.innerHTML = '输入正确';
+			tips.style.color = 'green';
+			inputtext.style.border = '1px solid green';
+		}else{
+			tips.innerHTML = '请输入长度为4~15位的字符';
+			tips.style.color = 'red';
+			inputtext.style.border = '1px solid red';
+		}
+	}
+	function countlength(str){
+		var inputlength = 0;
+		for(var i in str){
+			if(str.charCodeAt(i) >= 0 && str.charCodeAt(i) <= 128){
+				inputlength += 1;
+			}else{
+				inputlength += 2;
+			}
+		}
+		return inputlength;
+	};
+</script>
+</body>
+</html>
