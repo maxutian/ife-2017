@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>form03</title>
+	<style type="text/css">
+		#main{
+			width: 500px;
+			margin: 0 auto;
+		}
+		h4{
+			margin-right: 10px;
+		}
+		#form2,h4{
+			display: inline-block;
+			margin-top: 20px;
+			margin-left: 30px;
+		}
+		#label1{
+			margin-left: 100px;
+		}
+		#label2{
+			margin-left: 170px;
+		}
+		#label3{
+			margin-top: 20px;
+		}
+		#workPlace{
+			width: 335px;
+			height: 25px;
+			border-radius: 3px;
+			font-size: 15px;
+			border: 1px solid #acb7b1;
+		}
+		#seleProvince{
+			width: 100px;
+			height: 30px;
+			font-size: 15px;
+			border-radius: 3px;
+			margin-right: 30px;
+		}
+		#seleCollege{
+			width: 200px;
+			height: 30px;
+			font-size: 15px;
+			border-radius: 3px;
+		}
+	</style>
+</head>
+<body>
+<div id="main">
+	<form id="form1">
+		<label id="label1"><input type="radio" value="1" name="school" checked="checked">在校生</label>
+		<label id="label2"><input type="radio" value="2" name="school">非在校生</label>
+	</form>
+	<form id="form2">
+		<h4>学校</h4>
+		<select name="province" id="seleProvince">
+			<option value="jiangsu">江苏</option>
+			<option value="anhui">安徽</option>
+			<option value="zhejiang">浙江</option>
+		</select>
+		<select name="college" id="seleCollege"></select>
+	</form>
+	<label id="label3"><h4>工作单位</h4><input type="text" id="workPlace"></label>
+</div>
+<script type="text/javascript">
+	//在校，非在校切换
+	var ioselect = document.getElementsByName('school'),
+		form2 = document.getElementById('form2'),
+		label3 = document.getElementById('label3');
+	function changeio(){
+		if(ioselect[0].checked){
+			form2.style.display = 'block';
+			label3.style.display = 'none';
+		}else if(ioselect[1].checked){
+			form2.style.display = 'none';
+			label3.style.display = 'block';
+		}
+	}
+	changeio();
+	for(var i in ioselect){
+		ioselect[i].onclick = function(){
+			changeio();
+		}
+	}
+	//选择省份，显示对应大学
+	var province = document.getElementById('seleProvince'),
+		college = document.getElementById('seleCollege');
+	function seleCollege(){
+		var pro = province.value;
+		if(pro === 'jiangsu'){
+			college.add(new Option('南京大学','1'));
+			college.add(new Option('东南大学','2'));
+			college.add(new Option('南京邮电大学','3'));
+		}else if(pro === 'anhui'){
+			college.add(new Option('安徽大学','1'));
+			college.add(new Option('中国科技大学','2'));
+			college.add(new Option('安徽工业大学','3'));
+		}else if(pro === 'zhejiang'){
+			college.add(new Option('浙江大学','1'));
+			college.add(new Option('杭州师范大学','2'));
+			college.add(new Option('宁波大学','3'));
+		}
+	}
+	seleCollege();
+	province.onchange = function(){
+		college.options.length = 0;
+		seleCollege();
+	}
+</script>
+</body>
+</html>
