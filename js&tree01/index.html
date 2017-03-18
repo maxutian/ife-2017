@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>js07</title>
+	<style type='text/css'>
+		div{
+			display: flex;
+			border: 1px solid black;
+			justify-content: space-around;
+			align-items: center;
+		}
+		#buttons{
+			width: 200px;
+			margin: 0 auto;
+			border: none;
+		}
+		#root{
+			width: 800px;
+			height: 100px;
+			margin: 50px auto;
+		}
+		#child1{
+			width: 380px;
+			height: 70px;
+		}
+		#child2{
+			width: 170px;
+			height: 40px;
+		}
+		#child3{
+			width: 65px;
+			height: 10px;
+		}
+	</style>
+</head>
+<body>
+	<div id="buttons">
+		<button id="btn1">前序</button>
+		<button id="btn2">中序</button>
+		<button id="btn3">后序</button>
+	</div>
+	<div id="root">
+		<div id="child1">
+			<div id="child2">
+				<div id="child3"></div>
+				<div id="child3"></div>
+			</div>
+			<div id="child2">
+				<div id="child3"></div>
+				<div id="child3"></div>
+			</div>
+		</div>
+		<div id="child1">
+			<div id="child2">
+				<div id="child3"></div>
+				<div id="child3"></div>
+			</div>
+			<div id="child2">
+				<div id="child3"></div>
+				<div id="child3"></div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type='text/javascript'>
+	var root1 = document.getElementById('root'),
+		preorder = document.getElementById('btn1'),
+		inorder = document.getElementById('btn2'),
+		postorder = document.getElementById('btn3'),
+		ordered = [],
+		timer = null;
+	preorder.onclick = function(){
+		reset();
+		preOrder(root1);
+		changeColor();
+	}
+	inorder.onclick = function(){
+		reset();
+		inOrder(root1);
+		changeColor();
+	}
+	postorder.onclick = function(){
+		reset();
+		postOrder(root1);
+		changeColor();
+	}
+	function preOrder(node){
+		if(!(node === null)){
+			ordered.push(node);
+			preOrder(node.firstElementChild);
+			preOrder(node.lastElementChild);
+		}
+	}
+	function inOrder(node){
+		if(!(node === null)){
+			inOrder(node.firstElementChild);
+			ordered.push(node);
+			inOrder(node.lastElementChild);
+		}
+	}
+	function postOrder(node){
+		if(!(node === null)){
+			postOrder(node.firstElementChild);
+			postOrder(node.lastElementChild);
+			ordered.push(node);
+		}
+	}
+	function changeColor(){
+		var i = 0;
+		ordered[0].style.backgroundColor = 'blue';
+		timer = setInterval(function(){
+			i++;
+			if(i < ordered.length){
+				ordered[i].style.backgroundColor = 'blue';
+				ordered[i - 1].style.backgroundColor = 'white';
+			}else{
+				ordered[ordered.length - 1].style.backgroundColor = 'white';
+				clearInterval(timer);
+			}
+		},500);
+	}
+	function reset(){
+		ordered = [];
+		clearInterval(timer);
+		var alldivs = document.getElementsByTagName('div');
+		for(var i = 1;i < alldivs.length;i++){
+			alldivs[i].style.backgroundColor = 'white';
+		}
+	}
+</script>
+</html>
