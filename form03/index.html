@@ -78,7 +78,6 @@
 			label3.style.display = 'block';
 		}
 	}
-	changeio();
 	for(var i in ioselect){
 		ioselect[i].onclick = function(){
 			changeio();
@@ -103,9 +102,13 @@
 			college.add(new Option('宁波大学','3'));
 		}
 	}
-	seleCollege();
 	province.onchange = function(){
 		college.options.length = 0;
+		seleCollege();
+	}
+	//初始化
+	window.onload = function(){
+		changeio();
 		seleCollege();
 	}
 </script>

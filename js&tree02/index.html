@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>js08</title>
+	<style type='text/css'>
+		div{
+			display: flex;
+			border: 1px solid black;
+			justify-content: space-around;
+			align-items: center;
+		}
+		#options{
+			width: 300px;
+			margin: 0 auto;
+			border: none;
+		}
+		#root{
+			width: 1500px;
+			height: 200px;
+			margin: 50px auto;
+		}
+		#child1{
+			width: 470px;
+			height: 170px;
+		}
+		#child2{
+			width: 150px;
+			height: 140px;
+		}
+		#child3{
+			width: 30px;
+		}
+	</style>
+</head>
+<body>
+	<div id="options">
+		<button id="start">开始遍历</button>
+		<input type="text" id="input">
+		<button id="search">查找</button>
+	</div>
+	<div id="root"><p>root</p>
+		<div id="child1"><p>l11</p>
+			<div id="child2"><p>l21</p>
+				<div id="child3"><p>l31</p></div>
+				<div id="child3"><p>l32</p></div>
+				<div id="child3"><p>l33</p></div>
+			</div>
+			<div id="child2"><p>l22</p></div>
+			<div id="child2"><p>l23</p>
+				<div id="child3"><p>l34</p></div>
+				<div id="child3"><p>l35</p></div>
+			</div>
+		</div>
+		<div id="child1"><p>l12</p></div>
+		<div id="child1"><p>l13</p>
+			<div id="child2"><p>l24</p>
+				<div id="child3"><p>l36</p></div>
+				<div id="child3"><p>l37</p></div>
+			</div>
+			<div id="child2"><p>l25</p>
+				<div id="child3"><p>l38</p></div>
+				<div id="child3"><p>l39</p></div>
+				<div id="child3"><p>l30</p></div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type='text/javascript'>
+	var roots = document.getElementById('root'),
+		pe = document.getElementsByTagName('p'),
+		start = document.getElementById('start'),
+		search = document.getElementById('search'),
+		input = document.getElementById('input'),
+		timer = null,
+		sst = [],
+		arr = [];
+	start.onclick = function(){
+		reset();
+		ergodic(roots);
+		changeColor();
+	}
+	search.onclick = function(){
+		reset();
+		ergodic(roots);
+		markSearch();
+		isvalue();
+	}
+	//遍历节点
+	function ergodic(node){
+		if(!(node === null)){
+			arr.push(node);
+			for(var i = 0;i < node.childNodes.length;i++){
+				if(node.childNodes[i].nodeName !== '#text'){
+					ergodic(node.childNodes[i]);
+				}
+			}
+		}
+	}
+	//改变颜色
+	function changeColor(){
+		var i = 0;
+		arr[0].style.backgroundColor = 'blue';
+		timer = setInterval(function(){
+			i++;
+			if(i < arr.length){
+				arr[i].style.backgroundColor = 'blue';
+				arr[i - 1].style.backgroundColor = 'white';
+			}else{
+				arr[arr.length - 1].style.backgroundColor = 'white';
+				clearInterval(timer);
+			}
+		},500);
+	}
+	function reset(){
+		arr = [];
+		clearInterval(timer);
+		var alldivs = document.getElementsByTagName('div');
+		for(var i = 1;i < alldivs.length;i++){
+			alldivs[i].style.backgroundColor = 'white';
+		}
+	}
+	//改变搜索结果
+	function markSearch(){
+		var i = 0;
+		arr[0].style.backgroundColor = 'blue';
+		timer = setInterval(function(){
+			i++;
+			if(i < arr.length){
+				arr[i].style.backgroundColor = 'blue';
+				arr[i - 1].style.backgroundColor = 'white';
+				if(arr[i].innerHTML === input.value){
+					arr[i].style.color = 'red';
+				}
+			}else{
+				arr[arr.length - 1].style.backgroundColor = 'white';
+				clearInterval(timer);
+			}
+		},500);
+	}
+	//判断是否有结果
+	function isvalue(){
+		setTimeout(function(){
+			for(var i in pe){
+				sst.push(pe[i].innerHTML);
+			}
+			if(sst.indexOf(input.value) < 0){
+				alert('not found');
+			}
+		},(500 * arr.length));
+	}
+</script>
+</html>
