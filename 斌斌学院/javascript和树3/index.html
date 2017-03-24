@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>js08</title>
+	<style type='text/css'>
+		body{
+			font-size: 18px;
+		}
+		div{
+			border: 1px solid black;
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+		}
+		#options{
+			flex-wrap: wrap;
+			width: 330px;
+			margin: 0 auto;
+			border: none;
+		}
+		#deleteNode,#addInput,#addNode{
+			margin-top: 20px;
+		}
+		#root{
+			width: 1500px;
+			height: 300px;
+			margin: 50px auto;
+		}
+		#child1{
+			height: 270px;
+			flex-grow: 1;
+		}
+		#child2{
+			height: 240px;
+			flex-grow: 1;
+		}
+		#child3{
+			flex-grow: 1;
+		}
+		.added{
+			width: 100px;
+			height: 100px;
+		}
+	</style>
+</head>
+<body>
+	<div id="options">
+		<button id="start">开始遍历</button>
+		<input type="text" id="input">
+		<button id="search">查找</button>
+		<button id="deleteNode">删除节点</button>
+		<input type="text" id="addInput">
+		<button id="addNode">添加节点</button>
+	</div>
+	<div id="root">root
+		<div id="child1">l11
+			<div id="child2">l21
+				<div id="child3">l31</div>
+				<div id="child3">l32</div>
+				<div id="child3">l33</div>
+				<div id="child3">l33</div>
+			</div>
+			<div id="child2">l22</div>
+			<div id="child2">l23
+				<div id="child3">l34</div>
+				<div id="child3">l35</div>
+			</div>
+		</div>
+		<div id="child1">l12</div>
+		<div id="child1">l13
+			<div id="child2">l24
+				<div id="child3">l36</div>
+				<div id="child3">l37</div>
+			</div>
+			<div id="child2">l25
+				<div id="child3">l38</div>
+				<div id="child3">l39</div>
+				<div id="child3">l30</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type='text/javascript'>
+	var roots = document.getElementById('root'),
+			start = document.getElementById('start'),
+			search = document.getElementById('search'),
+			input = document.getElementById('input'),
+			deleteNode = document.getElementById('deleteNode'), 
+			addInput = document.getElementById('addInput'),
+			addNode = document.getElementById('addNode'),
+			timer = null,
+			arr = [];
+	window.onload = function(){
+		clickColor();
+	}
+	start.onclick = function(){
+		reset();
+		ergodic(roots);
+		changeColor();
+	}
+	search.onclick = function(){
+		reset();
+		ergodic(roots);
+		markSearch();
+	}
+	//遍历节点
+	function ergodic(node){
+		if(node !== null){
+			arr.push(node);
+			for(var i = 0;i < node.childNodes.length;i++){
+				if(node.childNodes[i].nodeName !== '#text'){
+					ergodic(node.childNodes[i]);
+				}
+			}
+		}
+	}
+	//改变颜色
+	function changeColor(){
+		var i = 0;
+		arr[0].style.backgroundColor = 'blue';
+		timer = setInterval(function(){
+			i++;
+			if(i < arr.length){
+				arr[i].style.backgroundColor = 'blue';
+				arr[i - 1].style.backgroundColor = 'white';
+			}else{
+				arr[arr.length - 1].style.backgroundColor = 'white';
+				clearInterval(timer);
+			}
+		},500);
+	}
+	function reset(){
+		arr = [];
+		clearInterval(timer);
+		var alldivs = document.getElementsByTagName('div');
+		for(var i = 1;i < alldivs.length;i++){
+			alldivs[i].style.backgroundColor = 'white';
+		}
+	}
+	//改变搜索结果
+	function markSearch(){
+		var i = 0,
+				count = 0;
+		if(input.value.length === 0){
+				alert('请输入查找的内容');
+		}else{
+			arr[i].style.backgroundColor = 'blue';
+			timer = setInterval(function(){
+				i++;
+				if(i < arr.length){
+					arr[i].style.backgroundColor = 'blue';
+					arr[i - 1].style.backgroundColor = 'white';
+					if(arr[i].innerHTML === input.value){
+						arr[i].style.color = 'red';
+						count++;
+					}
+				}else if(count === 0){
+					arr[arr.length - 1].style.backgroundColor = 'white';
+					alert('not found');
+					clearInterval(timer);
+				}
+				else{
+					arr[arr.length - 1].style.backgroundColor = 'white';
+					clearInterval(timer);
+				}
+			},100);
+		}
+	}
+	// 点击变颜色
+	var choosenNode = [];
+	function clickColor(){
+		ergodic(roots);
+		for(var i =0;i < arr.length;i++){
+			arr[i].onclick = function(e){
+				reset();
+				this.style.backgroundColor = 'green';
+				choosenNode.push(this);
+				e.stopPropagation();
+			}
+		}
+	}
+	// 删除节点
+	deleteNode.onclick = function(){
+		if(choosenNode.length === 0){
+			alert('请选择一个节点');
+		}else{
+			choosenNode[0].style.display = 'none';
+			choosenNode = [];
+		}
+	}
+	// 增加节点
+	addNode.onclick = function(){
+		var addEle = document.createElement('div');
+		addEle.innerHTML = addInput.value;
+		if(choosenNode.length === 0){
+			alert('请选择一个节点');
+		}else if(addInput.value === ''){
+			alert('请输入插入内容');
+		}else{
+			choosenNode[0].appendChild(addEle);
+			addEle.setAttribute('class','added');
+			choosenNode = [];
+		}
+	}
+</script>
+</html>

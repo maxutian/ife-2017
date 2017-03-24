@@ -9,6 +9,7 @@
 			border: 1px solid black;
 			justify-content: space-around;
 			align-items: center;
+
 		}
 		#options{
 			width: 300px;
@@ -68,12 +69,10 @@
 </body>
 <script type='text/javascript'>
 	var roots = document.getElementById('root'),
-		pe = document.getElementsByTagName('p'),
 		start = document.getElementById('start'),
 		search = document.getElementById('search'),
 		input = document.getElementById('input'),
 		timer = null,
-		sst = [],
 		arr = [];
 	start.onclick = function(){
 		reset();
@@ -84,7 +83,6 @@
 		reset();
 		ergodic(roots);
 		markSearch();
-		isvalue();
 	}
 	//遍历节点
 	function ergodic(node){
@@ -122,8 +120,9 @@
 	}
 	//改变搜索结果
 	function markSearch(){
-		var i = 0;
-		arr[0].style.backgroundColor = 'blue';
+		var i = 0,
+			count = 0;
+		arr[i].style.backgroundColor = 'blue';
 		timer = setInterval(function(){
 			i++;
 			if(i < arr.length){
@@ -131,23 +130,18 @@
 				arr[i - 1].style.backgroundColor = 'white';
 				if(arr[i].innerHTML === input.value){
 					arr[i].style.color = 'red';
+					count++;
 				}
-			}else{
+			}else if(count === 0){
+				alert('not found');
 				arr[arr.length - 1].style.backgroundColor = 'white';
 				clearInterval(timer);
 			}
-		},500);
-	}
-	//判断是否有结果
-	function isvalue(){
-		setTimeout(function(){
-			for(var i in pe){
-				sst.push(pe[i].innerHTML);
+			else{
+				arr[arr.length - 1].style.backgroundColor = 'white';
+				clearInterval(timer);
 			}
-			if(sst.indexOf(input.value) < 0){
-				alert('not found');
-			}
-		},(500 * arr.length));
+		},100);
 	}
 </script>
 </html>
